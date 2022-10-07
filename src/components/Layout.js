@@ -10,6 +10,8 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText'
+import { AddCircleOutlined, SubjectOutlined } from '@material-ui/icons';
+import { useHistory, useLocation } from 'react-router-dom';
 
      const drawerWidth= 240
 const useStyles = makeStyles({
@@ -30,11 +32,30 @@ const useStyles = makeStyles({
               },
               root:{
                   display:"flex"
+              },
+              active:{
+                background:"#f4f4f4"
               }
+            
 })
 
 function Layout({children}) {
     const classes = useStyles()
+    const history = useHistory()
+    const location = useLocation()
+
+    const menuItems = [
+      {
+        text:"My notes",
+        icon: <SubjectOutlined  color="secondary"/>,
+        path:"/create"
+      },
+      {
+        text:"Create Note",
+        icon: <AddCircleOutlined color="secondary"/>,
+        path:"/"
+      }
+    ]
   return (
     <div className={classes.root}>
     {/* app bar */}
@@ -53,6 +74,26 @@ function Layout({children}) {
       <Typography variant='h5'>
         Joseph Notes
       </Typography>
+
+      {/* List Links */}
+      <List>
+          {
+            menuItems.map(item =>(
+              <ListItem
+              button
+              key={item.text}
+              onClick={()=> history.push(item.path)}
+              className={location.pathname==item.path ? classes.active : null}
+              
+              >
+                <ListItemIcon>{item.icon}</ListItemIcon>
+                <ListItemText>{item.text}</ListItemText>
+
+                </ListItem>
+            ))
+            
+          }
+      </List>
       </Drawer>
     </div>
 
